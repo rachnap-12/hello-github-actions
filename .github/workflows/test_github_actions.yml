@@ -16,4 +16,25 @@ jobs:
        node-version: '14'
     - run: npm install -g bats
     - run: bats -v
+   example-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download a single artifact
+      uses: actions/download-artifact@v2
+      with:
+       name: output-log-file
+   setup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: ./setup_server.sh
+   build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: ./build_server.sh
+   test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: ./test_server.sh
 
